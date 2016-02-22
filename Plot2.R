@@ -1,0 +1,16 @@
+rm(list = ls())
+library(lubridate)
+Datos <- read.table(file = "household_power_consumption.txt" , header = TRUE, sep = ";")
+Datos$Fecha <- dmy_hms(paste(Datos$Date, Datos$Time, sep = " "))
+SubConjunto <- subset(x = Datos, subset = Datos$Fecha >= dmy_hms("01/02/2007 00:00:00") & Datos$Fecha <= dmy_hms("02/02/2007 23:59:59"))
+SubConjunto$Global_active_power <- as.numeric(as.character(SubConjunto$Global_active_power))
+SubConjunto$Sub_metering_1 <- as.numeric(as.character(SubConjunto$Sub_metering_1))
+SubConjunto$Sub_metering_2 <- as.numeric(as.character(SubConjunto$Sub_metering_2))
+SubConjunto$Sub_metering_3 <- as.numeric(as.character(SubConjunto$Sub_metering_3))
+SubConjunto$Voltage <- as.numeric(as.character(SubConjunto$Voltage))
+SubConjunto$Global_reactive_power <- as.numeric(as.character(SubConjunto$Global_reactive_power))
+
+#Plot 2
+png(filename = "./Plot2.png", width = 480, height = 480, bg = "transparent")
+plot(x = SubConjunto$Fecha, y = SubConjunto$Global_active_power, type = "s", main = "", xlab = "", ylab = "Global Active Power (Kilowatts)")
+dev.off()
